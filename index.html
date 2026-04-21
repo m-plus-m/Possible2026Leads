@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Possible 2026 — Lead Capture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #E76F51;
+    --green-light: #D4623F;
+    --green-pale: #FDEBD7;
+    --orange: #1B4332;
+    --orange-pale: #D8F3DC;
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E2DDD5;
+    --text: #1A1A18;
+    --muted: #6B6860;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+
+  header {
+    width: 100%;
+    background: var(--green);
+    color: #fff;
+    padding: 18px 20px 14px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
+  .header-sub { font-size: 11px; opacity: 0.65; margin-top: 2px; font-weight: 400; }
+  .header-count { background: var(--orange); color: #fff; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: none; }
+
+  .app { width: 100%; max-width: 480px; padding: 16px; flex: 1; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .back-btn {
+    background: none; border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+    padding: 0; margin-bottom: 20px;
+  }
+  .back-btn:hover { color: var(--text); }
+
+  .screen-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .screen-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  .action-btn {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .action-btn:hover { background: var(--bg); border-color: var(--green); }
+  .action-btn.primary { background: var(--green); color: #fff; border-color: var(--green); }
+  .action-btn.primary:hover { background: var(--green-light); }
+  .action-btn.accent { background: var(--orange); color: #fff; border-color: var(--orange); }
+  .action-btn.accent:hover { background: #D4623F; }
+  .action-btn .icon { font-size: 16px; flex-shrink: 0; }
+  .action-btn .btn-label { flex: 1; text-align: left; }
+  .action-btn .btn-arrow { opacity: 0.5; }
+
+  .field-group { margin-bottom: 14px; }
+  .field-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+  .field-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .field-input:focus { outline: none; border-color: var(--green); }
+  .field-input::placeholder { color: #B0ABA3; }
+  textarea.field-input { resize: none; line-height: 1.6; }
+  select.field-input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6860' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+  .tags-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .tag:hover { border-color: var(--green); color: var(--green); }
+  .tag.selected { background: var(--green); color: #fff; border-color: var(--green); }
+  .tag.priority-hot.selected { background: var(--orange); border-color: var(--orange); }
+  .tag.priority-warm.selected { background: #BA7517; border-color: #BA7517; }
+
+  .section-label {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 10px; margin-top: 16px;
+  }
+
+  .parse-area {
+    background: var(--bg);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    width: 100%;
+    min-height: 80px;
+    font-family: 'Montserrat', sans-serif;
+    resize: none;
+  }
+  .parse-area:focus { outline: none; border-color: var(--green); background: var(--surface); }
+  .parse-area::placeholder { color: #B0ABA3; }
+
+  .status-msg { font-size: 12px; color: var(--muted); margin-top: 8px; min-height: 18px; }
+  .status-msg.success { color: var(--green-light); font-weight: 500; }
+  .status-msg.error { color: var(--orange); }
+
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid #ffffff44; border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.7s linear infinite;
+    vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+  .lead-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    position: relative;
+  }
+  .lead-card:hover { border-color: #C8C3BA; }
+
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--green-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #A84D32;
+    flex-shrink: 0;
+  }
+
+  .lead-name { font-size: 14px; font-weight: 600; color: var(--text); }
+  .lead-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .lead-email { font-size: 11px; color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+
+  .pill {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px; margin-top: 5px; margin-right: 4px;
+  }
+  .pill-product { background: var(--orange-pale); color: #1B4332; }
+  .pill-hot { background: #FDEBD7; color: #A84D32; }
+  .pill-warm { background: #FEF5E4; color: #7A5210; }
+  .pill-cold { background: #EBF5FB; color: #1A5276; }
+
+  .delete-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: none; border: none; cursor: pointer;
+    font-size: 18px; color: #C8C3BA; line-height: 1;
+    padding: 0 4px;
+  }
+  .delete-btn:hover { color: var(--orange); }
+
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: var(--muted); font-size: 13px;
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 10px; }
+
+  .home-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .home-tab {
+    flex: 1; padding: 12px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--border); background: var(--surface);
+    font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--text); cursor: pointer; text-align: center;
+    transition: all 0.12s;
+  }
+  .home-tab:hover { border-color: var(--green); }
+  .home-tab.tab-quick { }
+  .home-tab.tab-manual { }
+
+  .parsed-preview {
+    background: var(--green-pale);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-top: 12px;
+    display: none;
+  }
+  .parsed-preview.show { display: block; }
+  .preview-field { font-size: 12px; color: var(--green); margin-bottom: 4px; }
+  .preview-label { font-weight: 600; margin-right: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="header-title">Possible 2026</div>
+    <div class="header-sub">Lead capture · TelmarHelixa</div>
+  </div>
+  <div class="header-count" id="header-count"></div>
+</header>
+
+<div class="app">
+
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="home-tabs" style="margin-top: 4px;">
+      <button class="home-tab" onclick="showScreen('screen-quick')">
+        ✦ Quick capture
+      </button>
+      <button class="home-tab" onclick="showScreen('screen-manual')">
+        ≡ Manual entry
+      </button>
+    </div>
+
+    <div class="section-label">Captured leads</div>
+    <div id="leads-list">
+      <div class="empty-state">
+        <div class="empty-icon">◎</div>
+        Start capturing leads from your conversations
+      </div>
+    </div>
+
+    <div id="export-section" style="display:none; margin-top: 16px;">
+      <button class="action-btn accent" onclick="exportCSV()">
+        <span class="icon">↓</span>
+        <span class="btn-label">Export CSV for Salesforce</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- QUICK CAPTURE -->
+  <div id="screen-quick" class="screen">
+    <button class="back-btn" onclick="showScreen('screen-home')">← Back</button>
+    <div class="screen-title">Quick capture</div>
+    <div class="screen-sub">Type or paste your notes — AI parses them into fields.</div>
+
+    <textarea class="parse-area" id="quick-input" rows="4"
+      placeholder="e.g. Sarah Chen, VP Media at GroupM, sarah@groupm.com, 917-555-0182 — mentioned Discover, budget review in Q3"></textarea>
+
+    <div class="section-label">Product interest</div>
+    <div class="tags-row" id="interest-tags">
+      <span class="tag" onclick="toggleTag(this)">Discover</span>
+      <span class="tag" onclick="toggleTag(this)">Explore</span>
+      <span class="tag" onclick="toggleTag(this)">Plan</span>
+      <span class="tag" onclick="toggleTag(this)">All products</span>
+      <span class="tag" onclick="toggleTag(this)">N/A — See notes</span>
+    </div>
+
+    <div class="section-label">Priority</div>
+    <div class="tags-row" id="priority-tags">
+      <span class="tag priority-hot" onclick="togglePriority(this)" data-val="Hot">🔥 Hot</span>
+      <span class="tag priority-warm" onclick="togglePriority(this)" data-val="Warm">Warm</span>
+      <span class="tag priority-cold" onclick="togglePriority(this)" data-val="Cold">Cold</span>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button class="action-btn primary" id="parse-btn" onclick="parseLead()">
+        <span class="icon">✦</span>
+        <span class="btn-label">Parse &amp; save lead</span>
+      </button>
+    </div>
+    <div class="status-msg" id="parse-status"></div>
+  </div>
+
+  <!-- MANUAL ENTRY -->
+  <div id="screen-manual" class="screen">
+    <button class="back-btn" onclick="showScreen('screen-home')">← Back</button>
+    <div class="screen-title">Manual entry</div>
+    <div class="screen-sub">Fill in what you know — all fields optional.</div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div class="field-group">
+        <label class="field-label">First name</label>
+        <input class="field-input" id="m-first" placeholder="First" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Last name</label>
+        <input class="field-input" id="m-last" placeholder="Last" />
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Title</label>
+      <input class="field-input" id="m-title" placeholder="VP Media, Research Director…" />
+    </div>
+    <div class="field-group">
+      <label class="field-label">Company</label>
+      <input class="field-input" id="m-company" placeholder="Company name" />
+    </div>
+    <div class="field-group">
+      <label class="field-label">Email</label>
+      <input class="field-input" id="m-email" type="email" placeholder="name@company.com" />
+    </div>
+    <div class="field-group">
+      <label class="field-label">Phone</label>
+      <input class="field-input" id="m-phone" placeholder="+1 (xxx) xxx-xxxx" />
+    </div>
+    <div class="field-group">
+      <label class="field-label">Product interest</label>
+      <select class="field-input" id="m-interest">
+        <option value="">Select…</option>
+        <option>Discover</option>
+        <option>Explore</option>
+        <option>Plan</option>
+        <option>All products</option>
+        <option>N/A — See notes</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Priority</label>
+      <select class="field-input" id="m-priority">
+        <option value="">Select…</option>
+        <option>Hot</option>
+        <option>Warm</option>
+        <option>Cold</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Notes</label>
+      <textarea class="field-input" id="m-notes" rows="3" placeholder="Context from the conversation…"></textarea>
+    </div>
+
+    <button class="action-btn primary" onclick="saveManual()">
+      <span class="icon">→</span>
+      <span class="btn-label">Save lead</span>
+    </button>
+    <div class="status-msg" id="manual-status"></div>
+  </div>
+
+</div>
+
+<script>
+  const ANTHROPIC_API = 'https://api.anthropic.com/v1/messages';
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzT7ezSGBT3RCnO1mxacEo4fi5I5D890sPYSRU5V99St6nxNxAGn6Nuyn02QiLStXYp/exec';
+  let leads = [];
+
+  async function saveToSheet(lead) {
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(lead)
+      });
+    } catch(e) {
+      console.warn('Sheet sync failed:', e);
+    }
+  }
+  let selectedPriority = '';
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('parse-status').textContent = '';
+    document.getElementById('manual-status').textContent = '';
+  }
+
+  function toggleTag(el) { el.classList.toggle('selected'); }
+
+  function togglePriority(el) {
+    document.querySelectorAll('#priority-tags .tag').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPriority = el.dataset.val;
+  }
+
+  async function parseLead() {
+    const text = document.getElementById('quick-input').value.trim();
+    if (!text) { setStatus('parse-status', 'Please add some notes first.', 'error'); return; }
+
+    const interest = [...document.querySelectorAll('#interest-tags .tag.selected')].map(t => t.textContent.trim()).join(', ');
+    const btn = document.getElementById('parse-btn');
+    btn.innerHTML = '<span class="spinner"></span><span class="btn-label">Parsing…</span>';
+    btn.disabled = true;
+    setStatus('parse-status', '', '');
+
+    try {
+      const res = await fetch(ANTHROPIC_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 500,
+          system: 'You are a lead parser for a B2B SaaS company called TelmarHelixa. Extract contact information from sales rep notes and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Put any follow-up context, buying signals, or conversation notes in the notes field. If a field is not present, use empty string.',
+          messages: [{ role: 'user', content: text }]
+        })
+      });
+      const data = await res.json();
+      const raw = (data.content || []).find(b => b.type === 'text')?.text || '{}';
+      let parsed;
+      try { parsed = JSON.parse(raw.replace(/```json|```/g, '').trim()); } catch { parsed = {}; }
+
+      const lead = {
+        firstName: parsed.firstName || '',
+        lastName: parsed.lastName || '',
+        title: parsed.title || '',
+        company: parsed.company || '',
+        email: parsed.email || '',
+        phone: parsed.phone || '',
+        interest: interest || '',
+        priority: selectedPriority || '',
+        notes: parsed.notes || '',
+        capturedAt: new Date().toLocaleString()
+      };
+      leads.push(lead);
+      renderLeads();
+      saveToSheet(lead);
+
+      document.getElementById('quick-input').value = '';
+      document.querySelectorAll('#interest-tags .tag').forEach(t => t.classList.remove('selected'));
+      document.querySelectorAll('#priority-tags .tag').forEach(t => t.classList.remove('selected'));
+      selectedPriority = '';
+
+      const name = [lead.firstName, lead.lastName].filter(Boolean).join(' ') || 'Lead';
+      setStatus('parse-status', '✓ Saved: ' + name + (lead.company ? ' · ' + lead.company : ''), 'success');
+    } catch (e) {
+      setStatus('parse-status', 'Parse failed — check your connection or use manual entry.', 'error');
+    }
+
+    btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>';
+    btn.disabled = false;
+  }
+
+  function saveManual() {
+    const lead = {
+      firstName: document.getElementById('m-first').value.trim(),
+      lastName: document.getElementById('m-last').value.trim(),
+      title: document.getElementById('m-title').value.trim(),
+      company: document.getElementById('m-company').value.trim(),
+      email: document.getElementById('m-email').value.trim(),
+      phone: document.getElementById('m-phone').value.trim(),
+      interest: document.getElementById('m-interest').value,
+      priority: document.getElementById('m-priority').value,
+      notes: document.getElementById('m-notes').value.trim(),
+      capturedAt: new Date().toLocaleString()
+    };
+    if (!lead.firstName && !lead.lastName && !lead.email) {
+      setStatus('manual-status', 'Add at least a name or email.', 'error'); return;
+    }
+    leads.push(lead);
+    renderLeads();
+    saveToSheet(lead);
+    ['m-first','m-last','m-title','m-company','m-email','m-phone','m-notes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('m-interest').value = '';
+    document.getElementById('m-priority').value = '';
+    const name = [lead.firstName, lead.lastName].filter(Boolean).join(' ') || 'Lead';
+    setStatus('manual-status', '✓ Saved: ' + name, 'success');
+  }
+
+  function setStatus(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'status-msg' + (type ? ' ' + type : '');
+  }
+
+  function renderLeads() {
+    const list = document.getElementById('leads-list');
+    const countBadge = document.getElementById('header-count');
+    const exportSec = document.getElementById('export-section');
+
+    countBadge.textContent = leads.length + (leads.length === 1 ? ' lead' : ' leads');
+    countBadge.style.display = leads.length ? 'block' : 'none';
+    exportSec.style.display = leads.length ? 'block' : 'none';
+
+    if (!leads.length) {
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">◎</div>Start capturing leads from your conversations</div>';
+      return;
+    }
+
+    list.innerHTML = [...leads].reverse().map((l, ri) => {
+      const i = leads.length - 1 - ri;
+      const initials = ((l.firstName[0] || '') + (l.lastName[0] || '')).toUpperCase() || '?';
+      const name = [l.firstName, l.lastName].filter(Boolean).join(' ') || 'Unknown';
+      const meta = [l.title, l.company].filter(Boolean).join(' · ');
+      const priorityClass = l.priority === 'Hot' ? 'pill-hot' : l.priority === 'Warm' ? 'pill-warm' : l.priority === 'Cold' ? 'pill-cold' : '';
+
+      return `<div class="lead-card">
+        <div class="avatar">${initials}</div>
+        <div style="flex:1; min-width:0;">
+          <div class="lead-name">${name}</div>
+          <div class="lead-meta">${meta || '—'}</div>
+          <div>
+            ${l.interest ? `<span class="pill pill-product">${l.interest}</span>` : ''}
+            ${l.priority && priorityClass ? `<span class="pill ${priorityClass}">${l.priority}</span>` : ''}
+          </div>
+          ${l.email || l.phone ? `<div class="lead-email">${[l.email, l.phone].filter(Boolean).join(' · ')}</div>` : ''}
+        </div>
+        <button class="delete-btn" onclick="deleteLead(${i})" title="Remove">×</button>
+      </div>`;
+    }).join('');
+  }
+
+  function deleteLead(i) {
+    if (confirm('Remove this lead?')) {
+      leads.splice(i, 1);
+      renderLeads();
+    }
+  }
+
+  function exportCSV() {
+    const headers = ['First Name','Last Name','Title','Company','Email','Phone','Product Interest','Priority','Notes','Captured At'];
+    const rows = leads.map(l =>
+      [l.firstName, l.lastName, l.title, l.company, l.email, l.phone, l.interest, l.priority, l.notes, l.capturedAt]
+        .map(v => `"${(v || '').replace(/"/g, '""')}"`)
+        .join(',')
+    );
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'possible_2026_leads.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  renderLeads();
+</script>
+</body>
+</html>
