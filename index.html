@@ -444,9 +444,21 @@
         })
       });
       const data = await res.json();
-      const raw = (data.content || []).find(b => b.type === 'text')?.text || '{}';
+      console.log('Worker response:', JSON.stringify(data));
+      let raw = '';
+      if (data.content && Array.isArray(data.content)) {
+        raw = data.content.find(b => b.type === 'text')?.text || '{}';
+      } else if (typeof data === 'string') {
+        raw = data;
+      }
+      raw = raw.replace(/```json|```/g, '').trim();
+      console.log('Raw parsed text:', raw);
       let parsed;
-      try { parsed = JSON.parse(raw.replace(/```json|```/g, '').trim()); } catch { parsed = {}; }
+      try { parsed = JSON.parse(raw); } catch { 
+        const jsonMatch = raw.match(/\{[\s\S]*\}/);
+        try { parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : {}; } catch { parsed = {}; }
+      }
+      console.log('Parsed fields:', JSON.stringify(parsed));
 
       const lead = {
         firstName: parsed.firstName || '',
