@@ -437,7 +437,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-5',
           max_tokens: 500,
           system: 'You are a lead parser for a B2B SaaS company called TelmarHelixa. Extract contact information from sales rep notes and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Put any follow-up context, buying signals, or conversation notes in the notes field. If a field is not present, use empty string.',
           messages: [{ role: 'user', content: text }]
