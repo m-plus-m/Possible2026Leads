@@ -237,6 +237,26 @@
   .home-tab.tab-quick { }
   .home-tab.tab-manual { }
 
+  .upload-area {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--bg);
+    position: relative;
+  }
+  .upload-area:hover { border-color: var(--green); background: var(--green-pale); }
+  .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-area .upload-icon { font-size: 24px; margin-bottom: 6px; }
+  .upload-area .upload-label { font-size: 13px; font-weight: 600; color: var(--text); }
+  .upload-area .upload-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .preview-img { width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-top: 10px; max-height: 200px; object-fit: cover; object-position: top; display: none; }
+  .mode-toggle { display: flex; gap: 0; margin-bottom: 16px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+  .mode-btn { flex: 1; padding: 9px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; border: none; background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.12s; }
+  .mode-btn.active { background: var(--green); color: #fff; }
+
   .parsed-preview {
     background: var(--green-pale);
     border-radius: var(--radius-sm);
@@ -292,10 +312,38 @@
   <div id="screen-quick" class="screen">
     <button class="back-btn" onclick="showScreen('screen-home')">← Back</button>
     <div class="screen-title">Quick capture</div>
-    <div class="screen-sub">Type or paste your notes — AI parses them into fields.</div>
 
-    <textarea class="parse-area" id="quick-input" rows="4"
-      placeholder="e.g. Sarah Chen, VP Media at GroupM, sarah@groupm.com, 917-555-0182 — mentioned Discover, budget review in Q3"></textarea>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="mode-notes-btn" onclick="switchMode('notes')">✦ Notes</button>
+      <button class="mode-btn" id="mode-linkedin-btn" onclick="switchMode('linkedin')">LinkedIn photo</button>
+    </div>
+
+    <!-- Notes mode -->
+    <div id="mode-notes">
+      <div class="screen-sub" style="margin-bottom: 12px;">Type or paste your conversation notes.</div>
+      <textarea class="parse-area" id="quick-input" rows="4"
+        placeholder="e.g. Sarah Chen, VP Media at GroupM, sarah@groupm.com — mentioned Discover, budget review Q3"></textarea>
+    </div>
+
+    <!-- LinkedIn photo mode -->
+    <div id="mode-linkedin" style="display:none;">
+      <div class="screen-sub" style="margin-bottom: 12px;">Upload a screenshot of their LinkedIn profile — AI will extract name, title and company.</div>
+      <div class="upload-area" id="upload-area">
+        <input type="file" accept="image/*" id="linkedin-img-input" onchange="handleImageUpload(event)" />
+        <div class="upload-icon">⬆</div>
+        <div class="upload-label">Tap to upload LinkedIn screenshot</div>
+        <div class="upload-sub">Photo, screenshot or camera</div>
+      </div>
+      <img id="linkedin-preview" class="preview-img" alt="LinkedIn preview" />
+      <div class="field-group" style="margin-top: 14px;">
+        <label class="field-label">Email <span style="color: var(--green); font-size: 10px;">— add manually</span></label>
+        <input class="field-input" id="li-email" type="email" placeholder="name@company.com" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Phone <span style="color: var(--muted); font-size: 10px;">— optional</span></label>
+        <input class="field-input" id="li-phone" placeholder="+1 (xxx) xxx-xxxx" />
+      </div>
+    </div>
 
     <div class="section-label">Product interest</div>
     <div class="tags-row" id="interest-tags">
@@ -406,6 +454,31 @@
     }
   }
   let selectedPriority = '';
+  let currentMode = 'notes';
+  let linkedInImageBase64 = '';
+
+  function switchMode(mode) {
+    currentMode = mode;
+    document.getElementById('mode-notes').style.display = mode === 'notes' ? 'block' : 'none';
+    document.getElementById('mode-linkedin').style.display = mode === 'linkedin' ? 'block' : 'none';
+    document.getElementById('mode-notes-btn').classList.toggle('active', mode === 'notes');
+    document.getElementById('mode-linkedin-btn').classList.toggle('active', mode === 'linkedin');
+    setStatus('parse-status', '', '');
+  }
+
+  function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      linkedInImageBase64 = e.target.result.split(',')[1];
+      const preview = document.getElementById('linkedin-preview');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      document.getElementById('upload-area').querySelector('.upload-label').textContent = file.name;
+    };
+    reader.readAsDataURL(file);
+  }
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -423,14 +496,24 @@
   }
 
   async function parseLead() {
-    const text = document.getElementById('quick-input').value.trim();
-    if (!text) { setStatus('parse-status', 'Please add some notes first.', 'error'); return; }
-
     const interest = [...document.querySelectorAll('#interest-tags .tag.selected')].map(t => t.textContent.trim()).join(', ');
     const btn = document.getElementById('parse-btn');
     btn.innerHTML = '<span class="spinner"></span><span class="btn-label">Parsing…</span>';
     btn.disabled = true;
     setStatus('parse-status', '', '');
+
+    let messages;
+    if (currentMode === 'linkedin') {
+      if (!linkedInImageBase64) { setStatus('parse-status', 'Please upload a LinkedIn screenshot first.', 'error'); btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>'; btn.disabled = false; return; }
+      messages = [{ role: 'user', content: [
+        { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: linkedInImageBase64 } },
+        { type: 'text', text: 'This is a LinkedIn profile screenshot. Extract the contact information and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Email and phone will likely be empty — leave them as empty string. Put their headline, summary or any relevant career context in notes. If a field is not found use empty string.' }
+      ]}];
+    } else {
+      const text = document.getElementById('quick-input').value.trim();
+      if (!text) { setStatus('parse-status', 'Please add some notes first.', 'error'); btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>'; btn.disabled = false; return; }
+      messages = [{ role: 'user', content: text }];
+    }
 
     try {
       const res = await fetch(ANTHROPIC_API, {
@@ -439,8 +522,8 @@
         body: JSON.stringify({
           model: 'claude-sonnet-4-5',
           max_tokens: 500,
-          system: 'You are a lead parser for a B2B SaaS company called TelmarHelixa. Extract contact information from sales rep notes and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Put any follow-up context, buying signals, or conversation notes in the notes field. If a field is not present, use empty string.',
-          messages: [{ role: 'user', content: text }]
+          system: 'You are a lead parser for a B2B SaaS company called TelmarHelixa. Extract contact information and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Put any follow-up context, buying signals, or career context in the notes field. If a field is not present, use empty string.',
+          messages: messages
         })
       });
       const data = await res.json();
@@ -460,13 +543,15 @@
       }
       console.log('Parsed fields:', JSON.stringify(parsed));
 
+      const manualEmail = currentMode === 'linkedin' ? (document.getElementById('li-email').value.trim() || '') : '';
+      const manualPhone = currentMode === 'linkedin' ? (document.getElementById('li-phone').value.trim() || '') : '';
       const lead = {
         firstName: parsed.firstName || '',
         lastName: parsed.lastName || '',
         title: parsed.title || '',
         company: parsed.company || '',
-        email: parsed.email || '',
-        phone: parsed.phone || '',
+        email: parsed.email || manualEmail,
+        phone: parsed.phone || manualPhone,
         interest: interest || '',
         priority: selectedPriority || '',
         notes: parsed.notes || '',
@@ -477,6 +562,14 @@
       saveToSheet(lead);
 
       document.getElementById('quick-input').value = '';
+      if (currentMode === 'linkedin') {
+        linkedInImageBase64 = '';
+        document.getElementById('linkedin-preview').style.display = 'none';
+        document.getElementById('linkedin-img-input').value = '';
+        document.getElementById('li-email').value = '';
+        document.getElementById('li-phone').value = '';
+        document.getElementById('upload-area').querySelector('.upload-label').textContent = 'Tap to upload LinkedIn screenshot';
+      }
       document.querySelectorAll('#interest-tags .tag').forEach(t => t.classList.remove('selected'));
       document.querySelectorAll('#priority-tags .tag').forEach(t => t.classList.remove('selected'));
       selectedPriority = '';
