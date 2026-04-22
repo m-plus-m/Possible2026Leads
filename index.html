@@ -456,6 +456,7 @@
   let selectedPriority = '';
   let currentMode = 'notes';
   let linkedInImageBase64 = '';
+  let linkedInMediaType = 'image/png';
 
   function switchMode(mode) {
     currentMode = mode;
@@ -471,9 +472,11 @@
     if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
-      linkedInImageBase64 = e.target.result.split(',')[1];
+      const dataUrl = e.target.result;
+      linkedInImageBase64 = dataUrl.split(',')[1];
+      linkedInMediaType = dataUrl.split(';')[0].split(':')[1] || 'image/png';
       const preview = document.getElementById('linkedin-preview');
-      preview.src = e.target.result;
+      preview.src = dataUrl;
       preview.style.display = 'block';
       document.getElementById('upload-area').querySelector('.upload-label').textContent = file.name;
     };
@@ -506,7 +509,7 @@
     if (currentMode === 'linkedin') {
       if (!linkedInImageBase64) { setStatus('parse-status', 'Please upload a LinkedIn screenshot first.', 'error'); btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>'; btn.disabled = false; return; }
       messages = [{ role: 'user', content: [
-        { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: linkedInImageBase64 } },
+        { type: 'image', source: { type: 'base64', media_type: linkedInMediaType, data: linkedInImageBase64 } },
         { type: 'text', text: 'This is a LinkedIn profile screenshot. Extract the contact information and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Email and phone will likely be empty — leave them as empty string. Put their headline, summary or any relevant career context in notes. If a field is not found use empty string.' }
       ]}];
     } else {
