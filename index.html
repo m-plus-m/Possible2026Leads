@@ -24,249 +24,102 @@
     --radius-sm: 8px;
   }
 
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0;
-  }
+  body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0; }
 
-  header {
-    width: 100%;
-    background: var(--green);
-    color: #fff;
-    padding: 18px 20px 14px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
+  header { width: 100%; background: var(--green); color: #fff; padding: 18px 20px 14px; display: flex; align-items: flex-end; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
   .header-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; }
   .header-sub { font-size: 11px; opacity: 0.65; margin-top: 2px; font-weight: 400; }
   .header-count { background: var(--orange); color: #fff; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: none; }
 
   .app { width: 100%; max-width: 480px; padding: 16px; flex: 1; }
-
   .screen { display: none; }
   .screen.active { display: block; }
 
-  .back-btn {
-    background: none; border: none; cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px; color: var(--muted);
-    display: flex; align-items: center; gap: 6px;
-    padding: 0; margin-bottom: 20px;
-  }
+  .back-btn { background: none; border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; padding: 0; margin-bottom: 20px; }
   .back-btn:hover { color: var(--text); }
 
   .screen-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
   .screen-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
 
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 10px;
-  }
-
-  .action-btn {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: var(--radius);
-    border: 1.5px solid var(--border);
-    background: var(--surface);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    cursor: pointer;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.15s, border-color 0.15s;
-  }
+  .action-btn { width: 100%; padding: 14px 16px; border-radius: var(--radius); border: 1.5px solid var(--border); background: var(--surface); font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); cursor: pointer; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; transition: background 0.15s, border-color 0.15s; }
   .action-btn:hover { background: var(--bg); border-color: var(--green); }
   .action-btn.primary { background: var(--green); color: #fff; border-color: var(--green); }
   .action-btn.primary:hover { background: var(--green-light); }
   .action-btn.accent { background: var(--orange); color: #fff; border-color: var(--orange); }
-  .action-btn.accent:hover { background: #D4623F; }
+  .action-btn.accent:hover { background: #163829; }
   .action-btn .icon { font-size: 16px; flex-shrink: 0; }
   .action-btn .btn-label { flex: 1; text-align: left; }
-  .action-btn .btn-arrow { opacity: 0.5; }
 
   .field-group { margin-bottom: 14px; }
   .field-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; display: block; }
-  .field-input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    color: var(--text);
-    background: var(--surface);
-    transition: border-color 0.15s;
-    appearance: none;
-    -webkit-appearance: none;
-  }
+  .field-input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Montserrat', sans-serif; font-size: 14px; color: var(--text); background: var(--surface); transition: border-color 0.15s; appearance: none; -webkit-appearance: none; }
   .field-input:focus { outline: none; border-color: var(--green); }
   .field-input::placeholder { color: #B0ABA3; }
   textarea.field-input { resize: none; line-height: 1.6; }
   select.field-input { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6860' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
 
   .tags-row { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag {
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1.5px solid var(--border);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--muted);
-    background: var(--surface);
-    cursor: pointer;
-    transition: all 0.12s;
-    user-select: none;
-  }
+  .tag { padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 12px; font-weight: 500; color: var(--muted); background: var(--surface); cursor: pointer; transition: all 0.12s; user-select: none; }
   .tag:hover { border-color: var(--green); color: var(--green); }
   .tag.selected { background: var(--green); color: #fff; border-color: var(--green); }
-  .tag.priority-hot.selected { background: var(--orange); border-color: var(--orange); }
+  .tag.priority-hot.selected { background: #C0392B; border-color: #C0392B; }
   .tag.priority-warm.selected { background: #BA7517; border-color: #BA7517; }
 
-  .section-label {
-    font-size: 11px; font-weight: 600; color: var(--muted);
-    letter-spacing: 0.06em; text-transform: uppercase;
-    margin-bottom: 10px; margin-top: 16px;
-  }
+  .section-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; margin-top: 16px; }
 
-  .parse-area {
-    background: var(--bg);
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px;
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.6;
-    width: 100%;
-    min-height: 80px;
-    font-family: 'Montserrat', sans-serif;
-    resize: none;
-  }
+  .parse-area { background: var(--bg); border: 1.5px dashed var(--border); border-radius: var(--radius-sm); padding: 14px; font-size: 13px; color: var(--text); line-height: 1.6; width: 100%; min-height: 80px; font-family: 'Montserrat', sans-serif; resize: none; }
   .parse-area:focus { outline: none; border-color: var(--green); background: var(--surface); }
   .parse-area::placeholder { color: #B0ABA3; }
 
   .status-msg { font-size: 12px; color: var(--muted); margin-top: 8px; min-height: 18px; }
-  .status-msg.success { color: var(--green-light); font-weight: 500; }
-  .status-msg.error { color: var(--orange); }
+  .status-msg.success { color: #2D6A4F; font-weight: 500; }
+  .status-msg.error { color: var(--green); }
 
-  .spinner {
-    display: inline-block; width: 14px; height: 14px;
-    border: 2px solid #ffffff44; border-top-color: #fff;
-    border-radius: 50%; animation: spin 0.7s linear infinite;
-    vertical-align: middle; margin-right: 6px;
-  }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #ffffff44; border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
-  .lead-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    position: relative;
-  }
+  .lead-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; position: relative; }
   .lead-card:hover { border-color: #C8C3BA; }
-
-  .avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    background: var(--green-pale);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 600; color: #A84D32;
-    flex-shrink: 0;
-  }
-
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green-pale); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #A84D32; flex-shrink: 0; }
   .lead-name { font-size: 14px; font-weight: 600; color: var(--text); }
   .lead-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .lead-email { font-size: 11px; color: var(--muted); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); }
+  .lead-addedby { font-size: 10px; color: var(--muted); margin-top: 4px; font-style: italic; }
 
-  .pill {
-    display: inline-block; font-size: 10px; font-weight: 600;
-    padding: 2px 8px; border-radius: 20px; margin-top: 5px; margin-right: 4px;
-  }
-  .pill-product { background: var(--orange-pale); color: #1B4332; }
+  .pill { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin-top: 5px; margin-right: 4px; }
+  .pill-product { background: var(--green-pale); color: #A84D32; }
   .pill-hot { background: #FDEBD7; color: #A84D32; }
   .pill-warm { background: #FEF5E4; color: #7A5210; }
   .pill-cold { background: #EBF5FB; color: #1A5276; }
 
-  .delete-btn {
-    position: absolute; top: 10px; right: 10px;
-    background: none; border: none; cursor: pointer;
-    font-size: 18px; color: #C8C3BA; line-height: 1;
-    padding: 0 4px;
-  }
-  .delete-btn:hover { color: var(--orange); }
+  .delete-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; font-size: 18px; color: #C8C3BA; line-height: 1; padding: 0 4px; }
+  .delete-btn:hover { color: var(--green); }
 
-  .empty-state {
-    text-align: center; padding: 40px 20px;
-    color: var(--muted); font-size: 13px;
-  }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 13px; }
   .empty-icon { font-size: 32px; margin-bottom: 10px; }
 
   .home-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-  .home-tab {
-    flex: 1; padding: 12px; border-radius: var(--radius-sm);
-    border: 1.5px solid var(--border); background: var(--surface);
-    font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600;
-    color: var(--text); cursor: pointer; text-align: center;
-    transition: all 0.12s;
-  }
+  .home-tab { flex: 1; padding: 12px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: var(--surface); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; text-align: center; transition: all 0.12s; }
   .home-tab:hover { border-color: var(--green); }
-  .home-tab.tab-quick { }
-  .home-tab.tab-manual { }
 
-  .upload-area {
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius-sm);
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    background: var(--bg);
-    position: relative;
-  }
+  .mode-toggle { display: flex; gap: 0; margin-bottom: 16px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+  .mode-btn { flex: 1; padding: 9px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; border: none; background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.12s; }
+  .mode-btn.active { background: var(--green); color: #fff; }
+
+  .upload-area { border: 1.5px dashed var(--border); border-radius: var(--radius-sm); padding: 20px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: var(--bg); position: relative; }
   .upload-area:hover { border-color: var(--green); background: var(--green-pale); }
   .upload-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
   .upload-area .upload-icon { font-size: 24px; margin-bottom: 6px; }
   .upload-area .upload-label { font-size: 13px; font-weight: 600; color: var(--text); }
   .upload-area .upload-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
   .preview-img { width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-top: 10px; max-height: 200px; object-fit: cover; object-position: top; display: none; }
-  .mode-toggle { display: flex; gap: 0; margin-bottom: 16px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
-  .mode-btn { flex: 1; padding: 9px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; border: none; background: var(--surface); color: var(--muted); cursor: pointer; transition: all 0.12s; }
-  .mode-btn.active { background: var(--green); color: #fff; }
 
-  .parsed-preview {
-    background: var(--green-pale);
-    border-radius: var(--radius-sm);
-    padding: 12px 14px;
-    margin-top: 12px;
-    display: none;
-  }
-  .parsed-preview.show { display: block; }
-  .preview-field { font-size: 12px; color: var(--green); margin-bottom: 4px; }
-  .preview-label { font-weight: 600; margin-right: 4px; }
+  .added-by-bar { background: var(--green-pale); border: 1.5px solid #F5C4A0; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .added-by-bar select { flex: 1; border: none; background: transparent; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); cursor: pointer; appearance: none; -webkit-appearance: none; }
+  .added-by-bar select:focus { outline: none; }
+  .added-by-label { font-size: 11px; font-weight: 600; color: #A84D32; letter-spacing: 0.04em; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -284,14 +137,9 @@
   <!-- HOME -->
   <div id="screen-home" class="screen active">
     <div class="home-tabs" style="margin-top: 4px;">
-      <button class="home-tab" onclick="showScreen('screen-quick')">
-        ✦ Quick capture
-      </button>
-      <button class="home-tab" onclick="showScreen('screen-manual')">
-        ≡ Manual entry
-      </button>
+      <button class="home-tab" onclick="showScreen('screen-quick')">✦ Quick capture</button>
+      <button class="home-tab" onclick="showScreen('screen-manual')">≡ Manual entry</button>
     </div>
-
     <div class="section-label">Captured leads</div>
     <div id="leads-list">
       <div class="empty-state">
@@ -299,7 +147,6 @@
         Start capturing leads from your conversations
       </div>
     </div>
-
     <div id="export-section" style="display:none; margin-top: 16px;">
       <button class="action-btn accent" onclick="exportCSV()">
         <span class="icon">↓</span>
@@ -313,9 +160,20 @@
     <button class="back-btn" onclick="showScreen('screen-home')">← Back</button>
     <div class="screen-title">Quick capture</div>
 
+    <!-- Added by -->
+    <div class="added-by-bar">
+      <span class="added-by-label">Added by</span>
+      <select id="q-addedby">
+        <option value="">Select your name…</option>
+        <option>Dave Currie</option>
+        <option>Tom Murray</option>
+        <option>Christine Burke</option>
+      </select>
+    </div>
+
     <div class="mode-toggle">
       <button class="mode-btn active" id="mode-notes-btn" onclick="switchMode('notes')">✦ Notes</button>
-      <button class="mode-btn" id="mode-linkedin-btn" onclick="switchMode('linkedin')">LinkedIn photo</button>
+      <button class="mode-btn" id="mode-img-btn" onclick="switchMode('image')">Photo / card</button>
     </div>
 
     <!-- Notes mode -->
@@ -325,23 +183,27 @@
         placeholder="e.g. Sarah Chen, VP Media at GroupM, sarah@groupm.com — mentioned Discover, budget review Q3"></textarea>
     </div>
 
-    <!-- LinkedIn photo mode -->
-    <div id="mode-linkedin" style="display:none;">
-      <div class="screen-sub" style="margin-bottom: 12px;">Upload a screenshot of their LinkedIn profile — AI will extract name, title and company.</div>
+    <!-- Image mode (LinkedIn or business card) -->
+    <div id="mode-image" style="display:none;">
+      <div class="screen-sub" style="margin-bottom: 12px;">Upload a LinkedIn screenshot or business card photo — AI will extract the details.</div>
       <div class="upload-area" id="upload-area">
-        <input type="file" accept="image/*" id="linkedin-img-input" onchange="handleImageUpload(event)" />
+        <input type="file" accept="image/*" id="img-input" onchange="handleImageUpload(event)" />
         <div class="upload-icon">⬆</div>
-        <div class="upload-label">Tap to upload LinkedIn screenshot</div>
-        <div class="upload-sub">Photo, screenshot or camera</div>
+        <div class="upload-label" id="upload-label-text">Tap to upload or take photo</div>
+        <div class="upload-sub">LinkedIn screenshot, business card, or badge photo</div>
       </div>
-      <img id="linkedin-preview" class="preview-img" alt="LinkedIn preview" />
+      <img id="img-preview" class="preview-img" alt="Preview" />
       <div class="field-group" style="margin-top: 14px;">
-        <label class="field-label">Email <span style="color: var(--green); font-size: 10px;">— add manually</span></label>
+        <label class="field-label">Email <span style="color: var(--green); font-size: 10px;">— add manually if not on image</span></label>
         <input class="field-input" id="li-email" type="email" placeholder="name@company.com" />
       </div>
       <div class="field-group">
         <label class="field-label">Phone <span style="color: var(--muted); font-size: 10px;">— optional</span></label>
         <input class="field-input" id="li-phone" placeholder="+1 (xxx) xxx-xxxx" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Additional notes</label>
+        <textarea class="field-input" id="li-notes" rows="3" placeholder="Context from the conversation…"></textarea>
       </div>
     </div>
 
@@ -374,7 +236,17 @@
   <div id="screen-manual" class="screen">
     <button class="back-btn" onclick="showScreen('screen-home')">← Back</button>
     <div class="screen-title">Manual entry</div>
-    <div class="screen-sub">Fill in what you know — all fields optional.</div>
+
+    <!-- Added by -->
+    <div class="added-by-bar">
+      <span class="added-by-label">Added by</span>
+      <select id="m-addedby">
+        <option value="">Select your name…</option>
+        <option>Dave Currie</option>
+        <option>Tom Murray</option>
+        <option>Christine Burke</option>
+      </select>
+    </div>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
       <div class="field-group">
@@ -440,6 +312,10 @@
   const ANTHROPIC_API = 'https://yellow-sea-4bb7.mmead-28c.workers.dev';
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzT7ezSGBT3RCnO1mxacEo4fi5I5D890sPYSRU5V99St6nxNxAGn6Nuyn02QiLStXYp/exec';
   let leads = [];
+  let selectedPriority = '';
+  let currentMode = 'notes';
+  let uploadedImageBase64 = '';
+  let uploadedMediaType = 'image/png';
 
   async function saveToSheet(lead) {
     try {
@@ -453,17 +329,20 @@
       console.warn('Sheet sync failed:', e);
     }
   }
-  let selectedPriority = '';
-  let currentMode = 'notes';
-  let linkedInImageBase64 = '';
-  let linkedInMediaType = 'image/png';
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('parse-status').textContent = '';
+    document.getElementById('manual-status').textContent = '';
+  }
 
   function switchMode(mode) {
     currentMode = mode;
     document.getElementById('mode-notes').style.display = mode === 'notes' ? 'block' : 'none';
-    document.getElementById('mode-linkedin').style.display = mode === 'linkedin' ? 'block' : 'none';
+    document.getElementById('mode-image').style.display = mode === 'image' ? 'block' : 'none';
     document.getElementById('mode-notes-btn').classList.toggle('active', mode === 'notes');
-    document.getElementById('mode-linkedin-btn').classList.toggle('active', mode === 'linkedin');
+    document.getElementById('mode-img-btn').classList.toggle('active', mode === 'image');
     setStatus('parse-status', '', '');
   }
 
@@ -473,21 +352,14 @@
     const reader = new FileReader();
     reader.onload = function(e) {
       const dataUrl = e.target.result;
-      linkedInImageBase64 = dataUrl.split(',')[1];
-      linkedInMediaType = dataUrl.split(';')[0].split(':')[1] || 'image/png';
-      const preview = document.getElementById('linkedin-preview');
+      uploadedImageBase64 = dataUrl.split(',')[1];
+      uploadedMediaType = dataUrl.split(';')[0].split(':')[1] || 'image/png';
+      const preview = document.getElementById('img-preview');
       preview.src = dataUrl;
       preview.style.display = 'block';
-      document.getElementById('upload-area').querySelector('.upload-label').textContent = file.name;
+      document.getElementById('upload-label-text').textContent = file.name;
     };
     reader.readAsDataURL(file);
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.getElementById('parse-status').textContent = '';
-    document.getElementById('manual-status').textContent = '';
   }
 
   function toggleTag(el) { el.classList.toggle('selected'); }
@@ -500,21 +372,33 @@
 
   async function parseLead() {
     const interest = [...document.querySelectorAll('#interest-tags .tag.selected')].map(t => t.textContent.trim()).join(', ');
+    const addedBy = document.getElementById('q-addedby').value;
     const btn = document.getElementById('parse-btn');
     btn.innerHTML = '<span class="spinner"></span><span class="btn-label">Parsing…</span>';
     btn.disabled = true;
     setStatus('parse-status', '', '');
 
     let messages;
-    if (currentMode === 'linkedin') {
-      if (!linkedInImageBase64) { setStatus('parse-status', 'Please upload a LinkedIn screenshot first.', 'error'); btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>'; btn.disabled = false; return; }
+    if (currentMode === 'image') {
+      if (!uploadedImageBase64) {
+        setStatus('parse-status', 'Please upload an image first.', 'error');
+        btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>';
+        btn.disabled = false;
+        return;
+      }
+      const imgPrompt = 'This image is either a LinkedIn profile screenshot, a business card, or a conference badge. Extract all visible contact information and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Extract every field you can see. Put any additional context like headline, address, website, or career summary in notes. If a field is not visible use empty string.';
       messages = [{ role: 'user', content: [
-        { type: 'image', source: { type: 'base64', media_type: linkedInMediaType, data: linkedInImageBase64 } },
-        { type: 'text', text: 'This is a LinkedIn profile screenshot. Extract the contact information and return ONLY valid JSON, no markdown, no backticks, no explanation. Return exactly this shape: {"firstName":"","lastName":"","title":"","company":"","email":"","phone":"","notes":""}. Email and phone will likely be empty — leave them as empty string. Put their headline, summary or any relevant career context in notes. If a field is not found use empty string.' }
+        { type: 'image', source: { type: 'base64', media_type: uploadedMediaType, data: uploadedImageBase64 } },
+        { type: 'text', text: imgPrompt }
       ]}];
     } else {
       const text = document.getElementById('quick-input').value.trim();
-      if (!text) { setStatus('parse-status', 'Please add some notes first.', 'error'); btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>'; btn.disabled = false; return; }
+      if (!text) {
+        setStatus('parse-status', 'Please add some notes first.', 'error');
+        btn.innerHTML = '<span class="icon">✦</span><span class="btn-label">Parse &amp; save lead</span>';
+        btn.disabled = false;
+        return;
+      }
       messages = [{ role: 'user', content: text }];
     }
 
@@ -538,16 +422,17 @@
         raw = data;
       }
       raw = raw.replace(/```json|```/g, '').trim();
-      console.log('Raw parsed text:', raw);
       let parsed;
-      try { parsed = JSON.parse(raw); } catch { 
+      try { parsed = JSON.parse(raw); } catch {
         const jsonMatch = raw.match(/\{[\s\S]*\}/);
         try { parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : {}; } catch { parsed = {}; }
       }
-      console.log('Parsed fields:', JSON.stringify(parsed));
 
-      const manualEmail = currentMode === 'linkedin' ? (document.getElementById('li-email').value.trim() || '') : '';
-      const manualPhone = currentMode === 'linkedin' ? (document.getElementById('li-phone').value.trim() || '') : '';
+      const manualEmail = currentMode === 'image' ? (document.getElementById('li-email').value.trim() || '') : '';
+      const manualPhone = currentMode === 'image' ? (document.getElementById('li-phone').value.trim() || '') : '';
+      const manualNotes = currentMode === 'image' ? (document.getElementById('li-notes').value.trim() || '') : '';
+      const combinedNotes = [parsed.notes, manualNotes].filter(Boolean).join(' | ');
+
       const lead = {
         firstName: parsed.firstName || '',
         lastName: parsed.lastName || '',
@@ -557,21 +442,23 @@
         phone: parsed.phone || manualPhone,
         interest: interest || '',
         priority: selectedPriority || '',
-        notes: parsed.notes || '',
-        capturedAt: new Date().toLocaleString()
+        notes: combinedNotes,
+        capturedAt: new Date().toLocaleString(),
+        addedBy: addedBy || ''
       };
       leads.push(lead);
       renderLeads();
       saveToSheet(lead);
 
       document.getElementById('quick-input').value = '';
-      if (currentMode === 'linkedin') {
-        linkedInImageBase64 = '';
-        document.getElementById('linkedin-preview').style.display = 'none';
-        document.getElementById('linkedin-img-input').value = '';
+      if (currentMode === 'image') {
+        uploadedImageBase64 = '';
+        document.getElementById('img-preview').style.display = 'none';
+        document.getElementById('img-input').value = '';
         document.getElementById('li-email').value = '';
         document.getElementById('li-phone').value = '';
-        document.getElementById('upload-area').querySelector('.upload-label').textContent = 'Tap to upload LinkedIn screenshot';
+        document.getElementById('li-notes').value = '';
+        document.getElementById('upload-label-text').textContent = 'Tap to upload or take photo';
       }
       document.querySelectorAll('#interest-tags .tag').forEach(t => t.classList.remove('selected'));
       document.querySelectorAll('#priority-tags .tag').forEach(t => t.classList.remove('selected'));
@@ -588,6 +475,7 @@
   }
 
   function saveManual() {
+    const addedBy = document.getElementById('m-addedby').value;
     const lead = {
       firstName: document.getElementById('m-first').value.trim(),
       lastName: document.getElementById('m-last').value.trim(),
@@ -598,7 +486,8 @@
       interest: document.getElementById('m-interest').value,
       priority: document.getElementById('m-priority').value,
       notes: document.getElementById('m-notes').value.trim(),
-      capturedAt: new Date().toLocaleString()
+      capturedAt: new Date().toLocaleString(),
+      addedBy: addedBy || ''
     };
     if (!lead.firstName && !lead.lastName && !lead.email) {
       setStatus('manual-status', 'Add at least a name or email.', 'error'); return;
@@ -650,6 +539,7 @@
             ${l.priority && priorityClass ? `<span class="pill ${priorityClass}">${l.priority}</span>` : ''}
           </div>
           ${l.email || l.phone ? `<div class="lead-email">${[l.email, l.phone].filter(Boolean).join(' · ')}</div>` : ''}
+          ${l.addedBy ? `<div class="lead-addedby">Added by ${l.addedBy}</div>` : ''}
         </div>
         <button class="delete-btn" onclick="deleteLead(${i})" title="Remove">×</button>
       </div>`;
@@ -664,9 +554,9 @@
   }
 
   function exportCSV() {
-    const headers = ['First Name','Last Name','Title','Company','Email','Phone','Product Interest','Priority','Notes','Captured At'];
+    const headers = ['First Name','Last Name','Title','Company','Email','Phone','Product Interest','Priority','Notes','Captured At','Added By'];
     const rows = leads.map(l =>
-      [l.firstName, l.lastName, l.title, l.company, l.email, l.phone, l.interest, l.priority, l.notes, l.capturedAt]
+      [l.firstName, l.lastName, l.title, l.company, l.email, l.phone, l.interest, l.priority, l.notes, l.capturedAt, l.addedBy]
         .map(v => `"${(v || '').replace(/"/g, '""')}"`)
         .join(',')
     );
