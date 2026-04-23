@@ -318,6 +318,7 @@
   let uploadedMediaType = 'image/png';
 
   async function saveToSheet(lead) {
+    console.log('Sending to sheet:', JSON.stringify(lead));
     try {
       await fetch(SHEET_URL, {
         method: 'POST',
